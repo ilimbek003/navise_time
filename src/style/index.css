@@ -1,0 +1,50 @@
+@import "../style/css/App.css";
+@import "../style/css/Footer.css";
+@import "../ui/alert/Alert.css";
+
+@font-face {
+  font-family: Inter;
+  src: url("../fonts/static/Inter-Light.ttf");
+  font-weight: 300;
+}
+
+@font-face {
+  font-family: Inter;
+  src: url("../fonts/static/Inter-Regular.ttf");
+  font-weight: 400;
+}
+
+@font-face {
+  font-family: Inter;
+  src: url("../fonts/static/Inter-Medium.ttf");
+  font-weight: 500;
+}
+
+@font-face {
+  font-family: Inter;
+  src: url("../fonts/static/Inter-SemiBold.ttf");
+  font-weight: 600;
+}
+
+@font-face {
+  font-family: Inter;
+  src: url("../fonts/static/Inter-Bold.ttf");
+  font-weight: 700;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: Inter;
+}
+.container {
+  width: 90%;
+  max-width: 740px;
+  margin: 0 auto;
+}
+.app {
+  width: 100%;
+  min-height: 100vh;
+  background: rgba(245, 247, 250, 1);
+}
