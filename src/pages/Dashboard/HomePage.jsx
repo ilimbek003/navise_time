@@ -1,12 +1,10 @@
 import React, { useState, useEffect } from "react";
 import { api } from "../../api/Api";
+import { IoCheckmark } from "react-icons/io5";
 
 const HomePage = ({ Alert, users }) => {
-  const first_name = localStorage.getItem("first_name");
-  const last_name = localStorage.getItem("last_name");
-  const [isWaveActive, setIsWaveActive] = useState(false);
   const [coords, setCoords] = useState({});
-
+  const work = JSON.parse(localStorage.getItem("isWork"));
   useEffect(() => {
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition((position) => {
@@ -20,14 +18,6 @@ const HomePage = ({ Alert, users }) => {
     }
   }, []);
 
-  const handleWorkClick = () => {
-    setIsWaveActive(true);
-    setTimeout(() => {
-      setIsWaveActive(false);
-    }, 1000);
-  };
-  const lat1 = 42.880204;
-  const lon1 = 74.588213;
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
@@ -39,18 +29,16 @@ const HomePage = ({ Alert, users }) => {
         { lat2, lon2 },
         {
           headers: {
-            Authorization: `Bearer ${token}`,
+            Authorization: `Token ${token}`,
           },
         }
       );
       if (response.data.response === true) {
         Alert("Посещение успешно принято!", "success");
-        localStorage.setItem("isWork", setIsWaveActive(true));
-      }
-      if (response.data.response === false) {
-        Alert(response.data.message, "error");
+        localStorage.setItem("isWork", true);
       }
     } catch (error) {
+      Alert(error.message, "error");
       console.error(error);
     }
   };
@@ -64,10 +52,31 @@ const HomePage = ({ Alert, users }) => {
         {users.first_name} {users.last_name}
       </h1>
       <div className="home_work">
-        <div className="work">
-          <p>Я на работе</p>
-          <div className="wave" onClick={handleSubmit}></div>
-        </div>
+        {work === true ? (
+          <div className="work_active">
+            <div
+              style={{
+                display: "flex",
+                alignItems: "center",
+                flexDirection: "column",
+              }}
+            >
+              <div>
+                <IoCheckmark className="check_mart" />
+              </div>
+              <p className="check_text">Принято!</p>
+            </div>
+            <div
+              className="wave_active"
+              onClick={() => localStorage.setItem("isWork", false)}
+            ></div>
+          </div>
+        ) : (
+          <div className="work">
+            <p>Я на работе</p>
+            <div className="wave" onClick={handleSubmit}></div>
+          </div>
+        )}
       </div>
     </div>
   );
