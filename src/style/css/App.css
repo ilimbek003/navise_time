@@ -60,7 +60,7 @@
 }
 
 .label {
-  font-size: 12px;
+  font-size: 14px;
   font-weight: 500;
   color: var(--white);
 }
@@ -155,6 +155,8 @@
   height: 100px;
   border-radius: 50%;
   margin: 0 0 10px 0;
+  object-fit: cover;
+  object-position: center;
 }
 .monthly {
   border-radius: 12px;
@@ -241,8 +243,96 @@
   border: none;
   cursor: pointer;
 }
-.flex_box{
+.flex_box {
   display: flex;
   align-items: center;
   justify-content: space-between;
+}
+
+.work {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(59.33deg, #d4151c 22.38%, #d35400 87.43%);
+  width: 220px;
+  height: 220px;
+  border-radius: 50%;
+  cursor: pointer;
+  margin: 150px 0 0 0;
+}
+.work p {
+  font-size: 20px;
+  color: rgba(255, 255, 255, 1);
+  font-weight: 600;
+  position: relative;
+  z-index: 99;
+}
+.home_work {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.wave {
+  position: absolute;
+  animation: waveAnimation 1s infinite;
+  width: 340px;
+  height: 340px;
+  border: 1px solid rgba(212, 21, 28, 0.5);
+  background: rgba(212, 21, 28, 0.5);
+  border-radius: 50%;
+}
+
+@keyframes waveAnimation {
+  0% {
+    transform: scale(0.5);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(1);
+    opacity: 0;
+  }
+}
+
+.edit {
+  font-size: 14px;
+  font-weight: 400;
+  color: rgba(212, 21, 28, 1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  margin: 10px 0 0 0;
+}
+.image_preview {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+}
+.image_preview img {
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  object-fit: cover;
+  margin: 20px 0 0 0;
+  object-position: center;
+}
+
+.password_text {
+  color: rgba(212, 21, 28, 1);
+  font-size: 16px;
+  font-weight: 500;
+  cursor: pointer;
+}
+.form-group {
+  position: relative;
+}
+.span-icon {
+  position: absolute;
+  top: 20px;
+  right: 10px;
+  cursor: pointer;
+  padding: 10px;
+  z-index: 999;
 }

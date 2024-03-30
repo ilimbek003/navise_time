@@ -1,12 +1,11 @@
 import React from "react";
-import profile from "../../../image/Frame 666.svg";
 import { IoPersonOutline } from "react-icons/io5";
 import { MdArrowForwardIos } from "react-icons/md";
 import { MdLogout } from "react-icons/md";
-import Modal from "./Modal";
+import { Modal } from "./Modal";
 import { useNavigate } from "react-router-dom";
 
-const Profile = () => {
+const Profile = ({ users }) => {
   const navigate = useNavigate();
   const [modal, setModal] = React.useState(false);
   const first_name = localStorage.getItem("first_name");
@@ -25,11 +24,15 @@ const Profile = () => {
             Профиль
           </h1>
           <div className="profile_div">
-            <img src={profile} className="img" alt="" />
+            <img
+              src={"http://217.18.62.110/" + (users.img ? users.img : "")}
+              className="img"
+              alt=""
+            />
             <p className="name">
-              {first_name} {last_name}
+              {users.first_name} {users.last_name}
             </p>
-            <p className="job">UX-UI Дизайнер</p>
+            <p className="job">{users.type}</p>
           </div>
           <div className="monthly">
             <p className="project" style={{ padding: "0 0 5px 0" }}>

@@ -1,36 +1,106 @@
-import axios from "axios";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { IoIosArrowBack } from "react-icons/io";
 import { useNavigate } from "react-router-dom";
+import { api, get } from "../../../api/Api";
+import ProfileImg from "./ProfileImg";
+import SettingInput from "./SettingInput";
 
-const ProfileSettings = () => {
+const ProfileSettings = ({ users, Alert, setLoading, loading, fetchData }) => {
   const navigate = useNavigate();
-//   const handleImageChange = (event) => {
-//     const imageFile = event.target.files && event.target.files[0];
-//     if (imageFile) {
-//       setSelectedImage(imageFile);
-//       const formData = new FormData();
-//       formData.append("photo", imageFile);
-//       axios
-//         .post(url + "/profile/personal/edit", formData, { headers })
-//         .then((response) => {
-//           alert("success", response.data.messages);
-//           personalChange();
-//         })
-//         .catch((error) => {
-//           alert.error("Ошибка загрузки изображения:", error);
-//         });
-//     }
-//   };
-//   const renderImagePreview = () => {
-//     if (selectedImage) {
-//       return <img src={URL.createObjectURL(selectedImage)} alt="Preview" />;
-//     } else {
-//       return (
-//         <img src={datas_personal ? datas_personal[0].avatar : ""} alt="" />
-//       );
-//     }
-//   };
+  const [user, setUser] = useState([]);
+  const [formData, setFormData] = useState({
+    first_name: "",
+    last_name: "",
+    type: "",
+    phone: null,
+  });
+  useEffect(() => {
+    const fetchData = async () => {
+      const residents = await get.userType();
+      setUser(residents);
+    };
+    fetchData();
+  }, []);
+
+  useEffect(() => {
+    if (users) {
+      setFormData({
+        ...formData,
+        first_name: users.first_name || "",
+        last_name: users.last_name || "",
+        type: users.type || "",
+        phone: users.phone || "",
+      });
+    }
+  }, [users]);
+
+  const handleChange = (event) => {
+    setFormData({
+      ...formData,
+      [event.target.name]: event.target.value,
+    });
+  };
+
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+    setLoading(true);
+    try {
+      const token = localStorage.getItem("token");
+      const response = await api.patch("/user/info", formData, {
+        headers: {
+          Authorization: `Token ${token}`,
+        },
+      });
+      if (response.data.response === true) {
+        Alert("Данные успешно обновлены!", "success");
+        setLoading(false);
+        fetchData();
+      }
+      if (response.data.response === false) {
+        setLoading(false);
+        Alert(response.data.message, "error");
+      }
+    } catch (error) {
+      setLoading(false);
+      console.error(error);
+    }
+  };
+
+  const formInputs = Object.keys(formData).map((key) => (
+    <div key={key}>
+      <label className="label" htmlFor={key}>
+        {key === "first_name" && "Имя"}
+        {key === "last_name" && "Фамилия"}
+        {key === "type" && "Должность"}
+        {key === "phone" && "Номер телефона"}
+        {key === "password" && "Пароль"}
+      </label>
+      {key === "type" ? (
+        <select
+          id={key}
+          name={key}
+          className="input"
+          value={formData[key]}
+          onChange={handleChange}
+        >
+          {user?.map((item) => (
+            <option key={item.id} value={item.id}>
+              {item.title}
+            </option>
+          ))}
+        </select>
+      ) : (
+        <input
+          className="input"
+          type="text"
+          id={key}
+          name={key}
+          value={formData[key]}
+          onChange={handleChange}
+        />
+      )}
+    </div>
+  ));
   return (
     <div className="container">
       <div className="flex_box" style={{ padding: "35px 0 0 0" }}>
@@ -41,24 +111,19 @@ const ProfileSettings = () => {
           size={30}
         />
         <h1
-          style={{ whiteSpace: "nowrap", width: "40%" }}
+          style={{ whiteSpace: "nowrap", width: "33%", fontSize: "20px" }}
           className="title title_home"
         >
           Настройки профиля
         </h1>
         <div style={{ width: "33%" }} />
       </div>
-      {/* <form onSubmit={handleImageChange}>
-        <label>
-          {renderImagePreview()}
-          <input
-            type="file"
-            accept="image/*"
-            onChange={handleImageChange}
-            style={{ display: "none" }}
-          />
-        </label>
-      </form> */}
+      <ProfileImg Alert={Alert} users={users} fetchData={fetchData} />
+      <SettingInput
+        loading={loading}
+        formInputs={formInputs}
+        handleSubmit={handleSubmit}
+      />
     </div>
   );
 };

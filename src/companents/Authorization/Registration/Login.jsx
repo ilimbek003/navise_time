@@ -26,7 +26,6 @@ const Login = ({ Alert, loading, setLoading }) => {
       if (response.data.response === true) {
         setLoading(false);
         navigate("/dashboard/home");
-        localStorage.setItem("phone", formData.phone);
         localStorage.setItem("token", response.data.token);
       }
       if (response.data.response === false) {
@@ -53,6 +52,9 @@ const Login = ({ Alert, loading, setLoading }) => {
         name={key}
         value={formData[key]}
         onChange={handleChange}
+        placeholder={
+          key === "phone" ? "Введите номер телефона" : "Введите пароль"
+        }
       />
     </div>
   ));

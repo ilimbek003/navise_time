@@ -40,7 +40,7 @@ const Registration = ({ Alert, loading, setLoading }) => {
         Alert(response.data.message, "success");
         localStorage.setItem("phone", formData.phone);
         localStorage.setItem("first_name", formData.first_name);
-         localStorage.setItem("last_name", formData.last_name);
+        localStorage.setItem("last_name", formData.last_name);
         setLoading(false);
       }
       if (response.data.response === false) {
@@ -71,6 +71,7 @@ const Registration = ({ Alert, loading, setLoading }) => {
           value={formData[key]}
           onChange={handleChange}
         >
+          <option value="">Выберите должность</option>
           {user?.map((item) => (
             <option key={item.id} value={item.id}>
               {item.title}
@@ -85,6 +86,19 @@ const Registration = ({ Alert, loading, setLoading }) => {
           name={key}
           value={formData[key]}
           onChange={handleChange}
+          placeholder={
+            key === "first_name"
+              ? "Введите ваше имя"
+              : key === "last_name"
+              ? "Введите вашу фамилию"
+              : key === "phone"
+              ? "Введите номер телефона"
+              : key === "password"
+              ? "Введите пароль"
+              : key === "confirm_password"
+              ? "Повторите пароль"
+              : ""
+          }
         />
       )}
     </div>
