@@ -1,11 +1,13 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { api } from "../../../api/Api";
 import logo from "../../../image/Frame 676.svg";
+import { FaEye, FaEyeSlash } from "react-icons/fa";
 import Loading from "../../../ui/loading/Loading";
 import { useNavigate } from "react-router-dom";
 
 const Login = ({ Alert, loading, setLoading }) => {
   const navigate = useNavigate();
+  const [visible, setVisible] = useState(false);
   const [formData, setFormData] = useState({
     phone: null,
     password: "",
@@ -40,14 +42,14 @@ const Login = ({ Alert, loading, setLoading }) => {
   };
 
   const formInputs = Object.keys(formData).map((key) => (
-    <div key={key}>
+    <div key={key} style={{position: "relative"}}>
       <label className="label" htmlFor={key}>
         {key === "phone" && "Номер телефона"}
         {key === "password" && "Пароль"}
       </label>
       <input
         className="input"
-        type="text"
+        type={key === "password" && visible ? "text" : "password"}
         id={key}
         name={key}
         value={formData[key]}
@@ -56,6 +58,15 @@ const Login = ({ Alert, loading, setLoading }) => {
           key === "phone" ? "Введите номер телефона" : "Введите пароль"
         }
       />
+      {key === "password" && (
+        <span className="span-icon" onClick={() => setVisible(!visible)}>
+          {visible ? (
+            <FaEye size={25} color={"#9F9F9F"} />
+          ) : (
+            <FaEyeSlash size={25} color={"#9F9F9F"} />
+          )}
+        </span>
+      )}
     </div>
   ));
 

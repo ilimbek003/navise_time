@@ -4,9 +4,12 @@ import { api } from "../../../api/Api";
 import logo from "../../../image/Frame 676.svg";
 import Loading from "../../../ui/loading/Loading";
 import { useNavigate } from "react-router-dom";
+import { FaEye, FaEyeSlash } from "react-icons/fa";
 const Registration = ({ Alert, loading, setLoading }) => {
   const navigate = useNavigate();
   const [user, setUser] = useState([]);
+  const [visible, setVisible] = useState(false);
+  const [visible1, setVisible1] = useState(false);
   const [formData, setFormData] = useState({
     first_name: "",
     last_name: "",
@@ -54,7 +57,7 @@ const Registration = ({ Alert, loading, setLoading }) => {
   };
 
   const formInputs = Object.keys(formData).map((key) => (
-    <div key={key}>
+    <div key={key} style={{ position: "relative" }}>
       <label className="label" htmlFor={key}>
         {key === "first_name" && "Имя"}
         {key === "last_name" && "Фамилия"}
@@ -81,7 +84,12 @@ const Registration = ({ Alert, loading, setLoading }) => {
       ) : (
         <input
           className="input"
-          type="text"
+          type={
+            (key === "password" && visible) ||
+            (key === "confirm_password" && visible1)
+              ? "text"
+              : "password"
+          }
           id={key}
           name={key}
           value={formData[key]}
@@ -100,6 +108,24 @@ const Registration = ({ Alert, loading, setLoading }) => {
               : ""
           }
         />
+      )}
+      {key === "password" && (
+        <span className="span-icon" onClick={() => setVisible(!visible)}>
+          {visible ? (
+            <FaEye size={25} color={"#9F9F9F"} />
+          ) : (
+            <FaEyeSlash size={25} color={"#9F9F9F"} />
+          )}
+        </span>
+      )}
+      {key === "confirm_password" && (
+        <span className="span-icon" onClick={() => setVisible1(!visible1)}>
+          {visible1 ? (
+            <FaEye size={25} color={"#9F9F9F"} />
+          ) : (
+            <FaEyeSlash size={25} color={"#9F9F9F"} />
+          )}
+        </span>
       )}
     </div>
   ));

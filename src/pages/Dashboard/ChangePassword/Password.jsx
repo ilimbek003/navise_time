@@ -2,14 +2,12 @@ import React, { useState } from "react";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 import { api } from "../../../api/Api";
 import Loading from "../../../ui/loading/Loading";
-import  { ModalOne } from "../Profile/Modal";
 
 const Password = ({ Alert }) => {
   const [visible, setVisible] = useState(false);
   const [visible1, setVisible1] = useState(false);
   const [visible2, setVisible2] = useState(false);
   const [loading, setLoading] = useState(false);
-  const [modal, setModal] = useState(false);
   const [password, setPassword] = useState({
     old_password: "",
     password: "",
@@ -102,7 +100,6 @@ const Password = ({ Alert }) => {
         <button className="btn" type="submit">
           {loading ? <Loading /> : "Сохранить изменения"}
         </button>
-        {modal && <ModalOne setModal={setModal} modal={modal} />}
       </form>
     </div>
   );
